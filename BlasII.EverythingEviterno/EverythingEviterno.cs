@@ -78,23 +78,12 @@ public class EverythingEviterno : BlasIIMod
 
     private RoomScene FindEviternoScene()
     {
-        //string room = "Z1808";
-        //string prefix = "LOGIC";
+        if (!CoreCache.Room.rooms.TryGetValue(-1699097293, out Room room))
+            throw new System.Exception("Failed to find Eviterno room");
 
-        foreach (var room in CoreCache.Room.rooms.Values)
-        {
-            if (room.Name == "Z1808")
-            {
-                foreach (var kvp in room.Scenes)
-                {
-                    if (kvp.Key == "LOGIC")
-                        return kvp.Value;
-                }
+        if (!room.Scenes.TryGetValue("LOGIC", out RoomScene scene))
+            throw new System.Exception("Failed to find Eviterno logic scene");
 
-                throw new System.Exception("Failed to find Eviterno logic room");
-            }
-        }
-
-        throw new System.Exception("Failed to find Eviterno room");
+        return scene;
     }
 }
