@@ -36,25 +36,20 @@ public class EverythingEviterno : BlasIIMod
 
     private IEnumerator LoadEviternoReference()
     {
-        ModLog.Info("Starting eviterno process");
+        ModLog.Info("Loading eviterno reference...");
         RoomScene scene = FindEviternoScene();
 
-        string path = "Enemies/BS10-logic/BS10 - EviternoSword - SpawnPoint";
-        string[] parts = path.Split('/');
+        string root = "Enemies";
+        string path = "BS10-logic/BS10 - EviternoSword - SpawnPoint";
 
         // Load temp scene
         scene.Load(CancellationToken.None);
-
         while (scene.InOperation)
             yield return null;
-        ModLog.Warn("Finished loading");
 
         // Find object through path
-        Transform parent = scene.GetRootGameObjects().First(x => x.name == parts[0]).transform;
-        for (int i = 1; i < parts.Length; i++)
-        {
-            parent = parent?.Find(parts[i]);
-        }
+        Transform parent = scene.GetRootGameObjects().First(x => x.name == root).transform;
+        parent = parent.Find(path);
 
         // Store the spawnpoint
         if (parent == null)
@@ -70,10 +65,8 @@ public class EverythingEviterno : BlasIIMod
 
         // Unload temp scene
         scene.Unload();
-
         while (scene.InOperation)
             yield return null;
-        ModLog.Warn("Finished unloading");
     }
 
     private RoomScene FindEviternoScene()
